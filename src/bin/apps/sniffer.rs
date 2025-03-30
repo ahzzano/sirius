@@ -26,7 +26,7 @@ impl<'a> App for Sniffer<'a> {
         let _ = self.sniffer.set_promiscuous_mode(true);
     }
 
-    fn run(&mut self) {}
+    // fn run(&mut self) {}
 
     fn disable(&mut self) {
         let _ = self.sniffer.set_promiscuous_mode(false);

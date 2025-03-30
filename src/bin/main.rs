@@ -50,6 +50,8 @@ async fn main(spawner: Spawner) {
 
     let mut sniffer = Sniffer::new(&wifi);
 
+    sniffer.init();
+
     sniffer.enable();
     sniffer.disable();
 
