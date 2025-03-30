@@ -7,6 +7,7 @@ use devices::wifi::WiFi;
 use embassy_executor::Spawner;
 use esp_hal::clock::CpuClock;
 use esp_hal::timer::timg::TimerGroup;
+use esp_println::println;
 use log::info;
 use utils::wait;
 
@@ -49,6 +50,11 @@ async fn main(spawner: Spawner) {
     wifi.init();
 
     let mut sniffer = Sniffer::new(wifi);
+
+    sniffer.set_callback(|_packet| {
+        let data = _packet.data;
+        println!("{data:2x?}")
+    });
 
     sniffer.init();
 
