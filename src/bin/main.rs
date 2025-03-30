@@ -49,7 +49,8 @@ async fn main(spawner: Spawner) {
     )
     .unwrap();
 
-    let wifi = WiFi::new(&_init, peripherals.WIFI);
+    let mut wifi = WiFi::new(&_init, peripherals.WIFI);
+    wifi.init();
 
     let mut sniffer = Sniffer::new(&wifi);
 

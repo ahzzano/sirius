@@ -28,7 +28,9 @@ impl<'a> WiFi<'a> {
         &self.sniffer
     }
 
-    pub fn init() {}
+    pub fn init(&mut self) {
+        let _ = self.device.start();
+    }
 }
 
 impl<'a> Device for WiFi<'a> {}
