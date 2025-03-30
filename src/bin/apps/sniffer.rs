@@ -12,16 +12,23 @@ impl<'a> Sniffer<'a> {
             sniffer: wifi.get_sniffer(),
         }
     }
+
+    pub fn init(&mut self) {
+        /*
+        insert callback here
+        */
+        todo!()
+    }
 }
 
 impl<'a> App for Sniffer<'a> {
     fn enable(&mut self) {
-        self.sniffer.set_promiscuous_mode(true);
+        let _ = self.sniffer.set_promiscuous_mode(true);
     }
 
     fn run(&mut self) {}
 
     fn disable(&mut self) {
-        self.sniffer.set_promiscuous_mode(false);
+        let _ = self.sniffer.set_promiscuous_mode(false);
     }
 }

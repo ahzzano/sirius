@@ -1,6 +1,3 @@
-#![no_std]
-#![no_main]
-
 use esp_hal::time::{Duration, Instant};
 
 pub fn wait(duration: Duration) {

@@ -4,13 +4,9 @@
 use apps::sniffer::Sniffer;
 use apps::App;
 use devices::wifi::WiFi;
-use devices::Device;
 use embassy_executor::Spawner;
-use embassy_time::Timer;
 use esp_hal::clock::CpuClock;
-use esp_hal::time::Duration;
 use esp_hal::timer::timg::TimerGroup;
-use esp_wifi::wifi::WifiController;
 use log::info;
 use utils::wait;
 
@@ -55,6 +51,7 @@ async fn main(spawner: Spawner) {
     let mut sniffer = Sniffer::new(&wifi);
 
     sniffer.enable();
+    sniffer.disable();
 
     // TODO: Spawn some tasks
     let _ = spawner;

@@ -8,7 +8,7 @@ use super::Device;
 
 pub struct WiFi<'a> {
     device: WifiController<'a>,
-    interface: Interfaces<'a>,
+    _interface: Interfaces<'a>,
     sniffer: Sniffer,
 }
 
@@ -19,7 +19,7 @@ impl<'a> WiFi<'a> {
 
         WiFi {
             device,
-            interface,
+            _interface: interface,
             sniffer,
         }
     }
