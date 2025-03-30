@@ -1,6 +1,6 @@
 use esp_hal::peripherals;
 use esp_wifi::{
-    wifi::{Interfaces, Sniffer, WifiController},
+    wifi::{Interfaces, PromiscuousPkt, Sniffer, WifiController},
     EspWifiController,
 };
 
@@ -26,6 +26,14 @@ impl<'a> WiFi<'a> {
 
     pub fn get_sniffer(&self) -> &Sniffer {
         &self.sniffer
+    }
+
+    pub fn set_sniffer_callback(&mut self, callback: fn(PromiscuousPkt)) {
+        self.sniffer.set_receive_cb(callback);
+    }
+
+    pub fn set_promiscuous_mode(&mut self, enabled: bool) {
+        self.sniffer.set_promiscuous_mode(enabled);
     }
 
     pub fn init(&mut self) {
