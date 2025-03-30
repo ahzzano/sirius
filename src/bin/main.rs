@@ -4,7 +4,7 @@
 use devices::wifi::WiFi;
 use devices::Device;
 use embassy_executor::Spawner;
-use embassy_time::{Duration, Timer};
+use embassy_time::Timer;
 use esp_hal::clock::CpuClock;
 use esp_hal::time::Duration;
 use esp_hal::timer::timg::TimerGroup;
