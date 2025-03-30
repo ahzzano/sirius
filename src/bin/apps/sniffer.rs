@@ -5,11 +5,11 @@ use crate::devices::wifi::WiFi;
 use super::App;
 
 pub struct Sniffer<'a> {
-    wifi: &'a mut WiFi<'a>,
+    wifi: WiFi<'a>,
 }
 
 impl<'a> Sniffer<'a> {
-    pub fn new(wifi: &'a mut WiFi<'a>) -> Self {
+    pub fn new(wifi: WiFi<'a>) -> Self {
         Sniffer { wifi }
     }
 
