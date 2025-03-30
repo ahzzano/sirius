@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+use apps::sniffer::Sniffer;
+use apps::App;
 use devices::wifi::WiFi;
 use devices::Device;
 use embassy_executor::Spawner;
@@ -19,6 +21,7 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 
 extern crate alloc;
 
+mod apps;
 mod devices;
 mod utils;
 
@@ -46,7 +49,11 @@ async fn main(spawner: Spawner) {
     )
     .unwrap();
 
-    let wifi = WiFi::new();
+    let wifi = WiFi::new(&_init, peripherals.WIFI);
+
+    let mut sniffer = Sniffer::new(&wifi);
+
+    sniffer.enable();
 
     // TODO: Spawn some tasks
     let _ = spawner;

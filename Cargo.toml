@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name    = "sirius"
+name = "sirius"
 version = "0.1.0"
 
 [[bin]]
@@ -49,6 +49,7 @@ esp-wifi = { version = "0.13.0", features = [
   "esp32",
   "log",
   "wifi",
+  "sniffer",
 ] }
 heapless = { version = "0.8.0", default-features = false }
 static_cell = { version = "2.1.0", features = ["nightly"] }
@@ -59,10 +60,10 @@ static_cell = { version = "2.1.0", features = ["nightly"] }
 opt-level = "s"
 
 [profile.release]
-codegen-units    = 1     # LLVM can perform better optimizations using a single thread
-debug            = 2
+codegen-units = 1        # LLVM can perform better optimizations using a single thread
+debug = 2
 debug-assertions = false
-incremental      = false
-lto              = 'fat'
-opt-level        = 's'
-overflow-checks  = false
+incremental = false
+lto = 'fat'
+opt-level = 's'
+overflow-checks = false
