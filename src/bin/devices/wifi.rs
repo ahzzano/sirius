@@ -24,10 +24,6 @@ impl<'a> WiFi<'a> {
         }
     }
 
-    pub fn get_sniffer(&self) -> &Sniffer {
-        &self.sniffer
-    }
-
     pub fn set_sniffer_callback(&mut self, callback: fn(PromiscuousPkt)) {
         self.sniffer.set_receive_cb(callback);
     }
