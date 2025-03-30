@@ -1,11 +1,16 @@
 #![no_std]
 #![no_main]
 
+use devices::wifi::WiFi;
+use devices::Device;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
 use esp_hal::clock::CpuClock;
+use esp_hal::time::Duration;
 use esp_hal::timer::timg::TimerGroup;
+use esp_wifi::wifi::WifiController;
 use log::info;
+use utils::wait;
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -13,6 +18,9 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 }
 
 extern crate alloc;
+
+mod devices;
+mod utils;
 
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
@@ -38,12 +46,15 @@ async fn main(spawner: Spawner) {
     )
     .unwrap();
 
+    let wifi = WiFi::new();
+
     // TODO: Spawn some tasks
     let _ = spawner;
 
     loop {
         info!("Hello world!");
-        Timer::after(Duration::from_secs(1)).await;
+        wait(esp_hal::time::Duration::from_millis(100));
+        // Timer::after(Duration::from_secs(1)).await;
     }
 
     // for inspiration have a look at the examples at https://github.com/esp-rs/esp-hal/tree/esp-hal-v1.0.0-beta.0/examples/src/bin
