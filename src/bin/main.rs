@@ -1,9 +1,10 @@
 #![no_std]
 #![no_main]
 
-// use apps::sniffer::Sniffer;
-// use apps::App;
-// use devices::wifi::WiFi;
+use sirius::apps::sniffer::Sniffer;
+use sirius::apps::App;
+use sirius::devices::wifi::WiFi;
+
 use embassy_executor::Spawner;
 use embassy_time::Duration;
 use embassy_time::Timer;
@@ -19,8 +20,8 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 
 extern crate alloc;
 
-// mod apps;
-// mod devices;
+// mod crate::apps;
+// mod crate::devices;
 
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
@@ -46,7 +47,7 @@ async fn main(spawner: Spawner) {
     )
     .unwrap();
 
-    // let mut wifi = WiFi::new(&_init, peripherals.WIFI);
+    let mut wifi = WiFi::new(&_init, peripherals.WIFI);
     // wifi.init();
 
     // let mut sniffer = Sniffer::new(wifi);
