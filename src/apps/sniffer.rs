@@ -12,7 +12,10 @@ pub struct WifiSniffer<'a> {
 #[allow(clippy::needless_lifetimes)]
 impl<'a> WifiSniffer<'a> {
     pub fn new(wifi: WiFi<'a>) -> Self {
-        WifiSniffer { wifi }
+        WifiSniffer {
+            wifi,
+            enabled: false,
+        }
     }
 
     pub fn set_callback(&mut self, callback: fn(PromiscuousPkt)) {
