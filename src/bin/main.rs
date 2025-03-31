@@ -20,9 +20,6 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 
 extern crate alloc;
 
-// mod crate::apps;
-// mod crate::devices;
-
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
     // generator version: 0.3.1
@@ -48,19 +45,19 @@ async fn main(spawner: Spawner) {
     .unwrap();
 
     let mut wifi = WiFi::new(&_init, peripherals.WIFI);
-    // wifi.init();
+    wifi.init();
 
-    // let mut sniffer = Sniffer::new(wifi);
+    let mut sniffer = Sniffer::new(wifi);
 
-    // sniffer.set_callback(|_packet| {
-    //     let data = _packet.data;
-    //     println!("{data:2x?}")
-    // });
+    sniffer.set_callback(|_packet| {
+        let data = _packet.data;
+        println!("{data:2x?}")
+    });
 
-    // sniffer.init();
+    sniffer.init();
 
-    // sniffer.enable();
-    // sniffer.disable();
+    sniffer.enable();
+    sniffer.disable();
 
     // TODO: Spawn some tasks
     let _ = spawner;
