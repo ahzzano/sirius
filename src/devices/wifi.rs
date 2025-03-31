@@ -29,7 +29,7 @@ impl<'a> WiFi<'a> {
     }
 
     pub fn set_promiscuous_mode(&mut self, enabled: bool) {
-        let _ = self.sniffer.set_promiscuous_mode(enabled);
+        self.sniffer.set_promiscuous_mode(enabled).unwrap();
     }
 
     pub fn init(&mut self) {
