@@ -6,6 +6,7 @@ use super::App;
 
 pub struct WifiSniffer<'a> {
     wifi: WiFi<'a>,
+    enabled: bool,
 }
 
 #[allow(clippy::needless_lifetimes)]
@@ -25,6 +26,7 @@ impl<'a> WifiSniffer<'a> {
 
 impl App for WifiSniffer<'_> {
     fn enable(&mut self) {
+        self.enabled = true;
         self.wifi.set_promiscuous_mode(true);
     }
 
@@ -32,5 +34,10 @@ impl App for WifiSniffer<'_> {
 
     fn disable(&mut self) {
         self.wifi.set_promiscuous_mode(false);
+        self.enabled = false;
+    }
+
+    fn is_enabled(&mut self) -> bool {
+        self.enabled
     }
 }
