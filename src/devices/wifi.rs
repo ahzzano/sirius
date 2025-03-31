@@ -14,8 +14,9 @@ pub struct WiFi<'a> {
 
 impl<'a> WiFi<'a> {
     pub fn new(wifi_controller: &'a EspWifiController, device: peripherals::WIFI) -> Self {
-        let (device, interface) = esp_wifi::wifi::new(wifi_controller, device).unwrap();
+        let (mut device, interface) = esp_wifi::wifi::new(wifi_controller, device).unwrap();
         let sniffer = device.take_sniffer().unwrap();
+        let _ = device.set_mode(esp_wifi::wifi::WifiMode::ApSta);
 
         WiFi {
             device,
