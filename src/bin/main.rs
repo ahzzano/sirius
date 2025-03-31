@@ -1,15 +1,16 @@
 #![no_std]
 #![no_main]
 
-use apps::sniffer::Sniffer;
-use apps::App;
-use devices::wifi::WiFi;
+// use apps::sniffer::Sniffer;
+// use apps::App;
+// use devices::wifi::WiFi;
 use embassy_executor::Spawner;
+use embassy_time::Duration;
+use embassy_time::Timer;
 use esp_hal::clock::CpuClock;
 use esp_hal::timer::timg::TimerGroup;
 use esp_println::println;
 use log::info;
-use utils::wait;
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -18,9 +19,8 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 
 extern crate alloc;
 
-mod apps;
-mod devices;
-mod utils;
+// mod apps;
+// mod devices;
 
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
@@ -46,28 +46,27 @@ async fn main(spawner: Spawner) {
     )
     .unwrap();
 
-    let mut wifi = WiFi::new(&_init, peripherals.WIFI);
-    wifi.init();
+    // let mut wifi = WiFi::new(&_init, peripherals.WIFI);
+    // wifi.init();
 
-    let mut sniffer = Sniffer::new(wifi);
+    // let mut sniffer = Sniffer::new(wifi);
 
-    sniffer.set_callback(|_packet| {
-        let data = _packet.data;
-        println!("{data:2x?}")
-    });
+    // sniffer.set_callback(|_packet| {
+    //     let data = _packet.data;
+    //     println!("{data:2x?}")
+    // });
 
-    sniffer.init();
+    // sniffer.init();
 
-    sniffer.enable();
-    sniffer.disable();
+    // sniffer.enable();
+    // sniffer.disable();
 
     // TODO: Spawn some tasks
     let _ = spawner;
 
     loop {
         info!("Hello world!");
-        wait(esp_hal::time::Duration::from_millis(100));
-        // Timer::after(Duration::from_secs(1)).await;
+        Timer::after(Duration::from_secs(1)).await;
     }
 
     // for inspiration have a look at the examples at https://github.com/esp-rs/esp-hal/tree/esp-hal-v1.0.0-beta.0/examples/src/bin
