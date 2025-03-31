@@ -4,14 +4,14 @@ use crate::devices::wifi::WiFi;
 
 use super::App;
 
-pub struct Sniffer<'a> {
+pub struct WifiSniffer<'a> {
     wifi: WiFi<'a>,
 }
 
 #[allow(clippy::needless_lifetimes)]
-impl<'a> Sniffer<'a> {
+impl<'a> WifiSniffer<'a> {
     pub fn new(wifi: WiFi<'a>) -> Self {
-        Sniffer { wifi }
+        WifiSniffer { wifi }
     }
 
     pub fn set_callback(&mut self, callback: fn(PromiscuousPkt)) {
@@ -23,7 +23,7 @@ impl<'a> Sniffer<'a> {
     }
 }
 
-impl App for Sniffer<'_> {
+impl App for WifiSniffer<'_> {
     fn enable(&mut self) {
         self.wifi.set_promiscuous_mode(true);
     }

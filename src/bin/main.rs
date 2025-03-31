@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 
-use sirius::apps::sniffer::Sniffer;
+use sirius::apps::sniffer::WifiSniffer;
 use sirius::apps::App;
 use sirius::devices::wifi::WiFi;
 
@@ -47,7 +47,7 @@ async fn main(spawner: Spawner) {
     let mut wifi = WiFi::new(&_init, peripherals.WIFI);
     wifi.init();
 
-    let mut sniffer = Sniffer::new(wifi);
+    let mut sniffer = WifiSniffer::new(wifi);
 
     sniffer.set_callback(|_packet| {
         let data = _packet.data;
