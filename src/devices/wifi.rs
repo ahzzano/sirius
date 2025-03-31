@@ -37,4 +37,4 @@ impl<'a> WiFi<'a> {
     }
 }
 
-impl<'a> Device for WiFi<'a> {}
+impl Device for WiFi<'_> {}

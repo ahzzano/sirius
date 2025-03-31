@@ -23,14 +23,14 @@ impl<'a> Sniffer<'a> {
     }
 }
 
-impl<'a> App for Sniffer<'a> {
+impl App for Sniffer<'_> {
     fn enable(&mut self) {
-        let _ = self.wifi.set_promiscuous_mode(true);
+        self.wifi.set_promiscuous_mode(true);
     }
 
     // fn run(&mut self) {}
 
     fn disable(&mut self) {
-        let _ = self.wifi.set_promiscuous_mode(false);
+        self.wifi.set_promiscuous_mode(false);
     }
 }
