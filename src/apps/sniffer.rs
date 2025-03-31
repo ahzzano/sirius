@@ -8,6 +8,7 @@ pub struct Sniffer<'a> {
     wifi: WiFi<'a>,
 }
 
+#[allow(clippy::needless_lifetimes)]
 impl<'a> Sniffer<'a> {
     pub fn new(wifi: WiFi<'a>) -> Self {
         Sniffer { wifi }
@@ -18,9 +19,6 @@ impl<'a> Sniffer<'a> {
     }
 
     pub fn init(&mut self) {
-        /*
-        insert callback here
-        */
         self.wifi.init();
     }
 }
