@@ -3,6 +3,10 @@
 
 use core::cell::RefCell;
 
+use esp_hal::spi::master::Spi;
+use esp_println::print;
+use ieee80211::match_frames;
+use ieee80211::mgmt_frame::BeaconFrame;
 use sirius::apps::sniffer::WifiSniffer;
 use sirius::apps::App;
 use sirius::devices::wifi::WiFi;
@@ -51,20 +55,26 @@ async fn main(spawner: Spawner) {
     let mut sniffer = WifiSniffer::new(RefCell::new(wifi));
 
     sniffer.set_callback(|_packet| {
-        let data = _packet.data;
-        println!("{data:2x?}")
+        // println!("{data:2x?}")
+        let _ = match_frames!(_packet.data, beacon=BeaconFrame => {
+            let ssid = beacon.ssid();
+            print!("{ssid:?}");
+            let recv = beacon.header.receiver_address;
+            let transmitter = beacon.header.transmitter_address;
+            print!(" {transmitter:?} {recv:?}\n")
+        });
     });
 
     sniffer.init();
-
     sniffer.enable();
-    sniffer.disable();
+
+    // sniffer.disable();
 
     // TODO: Spawn some tasks
     let _ = spawner;
 
     loop {
-        info!("Hello world!");
+        // info!("Hello world!");
         Timer::after(Duration::from_secs(1)).await;
     }
 
