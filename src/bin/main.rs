@@ -2,7 +2,6 @@
 #![no_main]
 
 use core::cell::RefCell;
-use core::error;
 
 use embedded_hal_bus::spi::ExclusiveDevice;
 use esp_hal::delay::Delay;
@@ -13,7 +12,6 @@ use esp_hal::spi::master::Config;
 use esp_hal::spi::master::Spi;
 use esp_hal::time::Rate;
 use esp_println::print;
-use esp_println::println;
 use ieee80211::match_frames;
 use ieee80211::mgmt_frame::BeaconFrame;
 use log::error;
