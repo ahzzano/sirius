@@ -3,7 +3,6 @@
 
 use core::cell::RefCell;
 
-use esp_hal::spi::master::Spi;
 use esp_println::print;
 use ieee80211::match_frames;
 use ieee80211::mgmt_frame::BeaconFrame;
@@ -16,7 +15,6 @@ use embassy_time::Duration;
 use embassy_time::Timer;
 use esp_hal::clock::CpuClock;
 use esp_hal::timer::timg::TimerGroup;
-use esp_println::println;
 use log::info;
 
 #[panic_handler]
