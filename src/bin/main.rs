@@ -18,7 +18,9 @@ use esp_hal::timer::timg::TimerGroup;
 use log::info;
 
 #[panic_handler]
-fn panic(_: &core::panic::PanicInfo) -> ! {
+fn panic(info: &core::panic::PanicInfo) -> ! {
+    let message = info.message();
+    error!("Error: {message}");
     loop {}
 }
 
