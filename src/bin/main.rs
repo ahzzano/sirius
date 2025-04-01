@@ -3,7 +3,9 @@
 
 use core::cell::RefCell;
 
-use embedded_hal_bus::spi::ExclusiveDevice;
+use embedded_hal_bus::spi::AtomicDevice;
+// use embedded_hal_bus::spi::ExclusiveDevice;
+use embedded_hal_bus::util::AtomicCell;
 use esp_hal::delay::Delay;
 use esp_hal::gpio::Level;
 use esp_hal::gpio::Output;
@@ -94,7 +96,8 @@ async fn main(spawner: Spawner) {
 
     let cs = Output::new(peripherals.GPIO17, Level::High, OutputConfig::default());
 
-    let nrf_dev = ExclusiveDevice::new(spi, cs, _delays).unwrap();
+    let atomic_cell = AtomicCell::new(spi);
+    let nrf_dev = AtomicDevice::new(&atomic_cell, cs, _delays).unwrap();
     let mut delays = Delay::new();
 
     let ce = Output::new(peripherals.GPIO21, Level::Low, OutputConfig::default());
