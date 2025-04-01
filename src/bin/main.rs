@@ -2,10 +2,23 @@
 #![no_main]
 
 use core::cell::RefCell;
+use core::error;
 
+use embedded_hal_bus::spi::ExclusiveDevice;
+use esp_hal::delay::Delay;
+use esp_hal::gpio::Level;
+use esp_hal::gpio::Output;
+use esp_hal::gpio::OutputConfig;
+use esp_hal::spi::master::Config;
+use esp_hal::spi::master::Spi;
+use esp_hal::time::Rate;
 use esp_println::print;
+use esp_println::println;
 use ieee80211::match_frames;
 use ieee80211::mgmt_frame::BeaconFrame;
+use log::error;
+use nrf24_rs::config::NrfConfig;
+use nrf24_rs::Nrf24l01;
 use sirius::apps::sniffer::WifiSniffer;
 use sirius::apps::App;
 use sirius::devices::wifi::WiFi;
@@ -64,17 +77,49 @@ async fn main(spawner: Spawner) {
             print!(" {transmitter:?} {recv:?}\n")
         });
     });
-
     sniffer.init();
     sniffer.enable();
+    sniffer.disable();
 
-    // sniffer.disable();
+    let spi = Spi::new(
+        peripherals.SPI2,
+        Config::default()
+            .with_frequency(Rate::from_khz(100))
+            .with_mode(esp_hal::spi::Mode::_0),
+    )
+    .unwrap()
+    .with_miso(peripherals.GPIO19)
+    .with_mosi(peripherals.GPIO5)
+    .with_sck(peripherals.GPIO18);
+
+    let mut _delays = Delay::new();
+
+    let cs = Output::new(peripherals.GPIO17, Level::High, OutputConfig::default());
+
+    let nrf_dev = ExclusiveDevice::new(spi, cs, _delays).unwrap();
+    let mut delays = Delay::new();
+
+    let ce = Output::new(peripherals.GPIO21, Level::Low, OutputConfig::default());
+
+    let mut nrf = Nrf24l01::new(
+        nrf_dev,
+        ce,
+        &mut delays,
+        NrfConfig::default()
+            .channel(8)
+            .pa_level(nrf24_rs::config::PALevel::Min)
+            .payload_size(10),
+    )
+    .inspect_err(|e| error!("{e:?}"));
+
+    // let connected = nrf.is_connected();
 
     // TODO: Spawn some tasks
     let _ = spawner;
 
     loop {
-        // info!("Hello world!");
+        info!("Hello world!");
+        // println!("NRF Status: {nrf_dev:?}");
         Timer::after(Duration::from_secs(1)).await;
     }
 
