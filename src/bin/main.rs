@@ -106,19 +106,31 @@ async fn main(spawner: Spawner) {
         ce,
         &mut delays,
         NrfConfig::default()
-            .channel(8)
+            .channel(11)
             .pa_level(nrf24_rs::config::PALevel::Min)
             .payload_size(10),
     )
-    .inspect_err(|e| error!("{e:?}"));
+    .unwrap();
 
+    let connectivity = nrf.is_connected();
+
+    if let Ok(connected) = connectivity {
+        info!("NRF Status > {connected}");
+    }
+
+    nrf.open_writing_pipe(b"00000").unwrap();
+    let message = b"animo la salle";
+
+    let _ = nrf
+        .write(&mut delays, message)
+        .inspect_err(|e| info!("{e:?}"));
     // let connected = nrf.is_connected();
 
     // TODO: Spawn some tasks
     let _ = spawner;
 
     loop {
-        info!("Hello world!");
+        // info!("Hello world!");
         // println!("NRF Status: {nrf_dev:?}");
         Timer::after(Duration::from_secs(1)).await;
     }
