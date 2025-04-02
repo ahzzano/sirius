@@ -1,3 +1,4 @@
+pub mod nrf_sniffer;
 pub mod sniffer;
 
 pub trait App {
