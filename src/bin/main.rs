@@ -109,7 +109,8 @@ async fn main(spawner: Spawner) {
         NrfConfig::default()
             .channel(11)
             .pa_level(nrf24_rs::config::PALevel::Min)
-            .payload_size(10),
+            .payload_size(10)
+            .crc_encoding_scheme(nrf24_rs::config::EncodingScheme::NoRedundancyCheck),
     )
     .unwrap();
 
