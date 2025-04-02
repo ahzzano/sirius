@@ -128,10 +128,10 @@ async fn main(spawner: Spawner) {
     let _ = nrf.start_listening();
 
     let mut buf = [0u8; MAX_PAYLOAD_SIZE as usize];
-    while let Ok(_) = nrf.data_available() {
+    while nrf.data_available().is_ok() {
         let res = nrf.read(&mut buf);
 
-        if let Ok(_) = res {
+        if res.is_ok() {
             println!("Read: {buf:02x?}");
         }
     }
