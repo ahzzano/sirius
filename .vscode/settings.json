@@ -1,5 +1,5 @@
 {
-  "rust-analyzer.cargo.allTargets": false,
+  "rust-analyzer.cargo.allTargets": true,
   "rust-analyzer.cargo.target": "xtensa-esp32-none-elf",
   "rust-analyzer.server.extraEnv": {
     "RUSTUP_TOOLCHAIN": "stable"
