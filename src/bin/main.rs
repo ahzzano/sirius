@@ -14,11 +14,14 @@ use esp_hal::spi::master::Config;
 use esp_hal::spi::master::Spi;
 use esp_hal::time::Rate;
 use esp_println::print;
+use esp_println::println;
 use ieee80211::match_frames;
 use ieee80211::mgmt_frame::BeaconFrame;
 use log::error;
+use nrf24_rs::config::DataPipe;
 use nrf24_rs::config::NrfConfig;
 use nrf24_rs::Nrf24l01;
+use nrf24_rs::MAX_PAYLOAD_SIZE;
 use sirius::apps::sniffer::WifiSniffer;
 use sirius::apps::App;
 use sirius::devices::wifi::WiFi;
@@ -109,7 +112,8 @@ async fn main(spawner: Spawner) {
         NrfConfig::default()
             .channel(11)
             .pa_level(nrf24_rs::config::PALevel::Min)
-            .payload_size(10)
+            .payload_size(MAX_PAYLOAD_SIZE)
+            .addr_width(5)
             .crc_encoding_scheme(nrf24_rs::config::EncodingScheme::NoRedundancyCheck),
     )
     .unwrap();
@@ -120,13 +124,17 @@ async fn main(spawner: Spawner) {
         info!("NRF Status > {connected}");
     }
 
-    nrf.open_writing_pipe(b"00000").unwrap();
-    let message = b"animo la salle";
+    let _ = nrf.open_reading_pipe(DataPipe::DP0, b"0000");
+    let _ = nrf.start_listening();
 
-    let _ = nrf
-        .write(&mut delays, message)
-        .inspect_err(|e| info!("{e:?}"));
-    // let connected = nrf.is_connected();
+    let mut buf = [0u8; MAX_PAYLOAD_SIZE as usize];
+    while let Ok(_) = nrf.data_available() {
+        let res = nrf.read(&mut buf);
+
+        if let Ok(_) = res {
+            println!("Read: {buf:02x?}");
+        }
+    }
 
     // TODO: Spawn some tasks
     let _ = spawner;
