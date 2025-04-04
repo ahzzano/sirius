@@ -6,7 +6,6 @@ use core::cell::RefCell;
 use log::error;
 #[allow(unused_imports)]
 use sirius::apps::wifi_sniffer::WifiSniffer;
-use sirius::apps::AsyncApp;
 use sirius::apps::SyncApp;
 #[allow(unused_imports)]
 use sirius::devices::wifi::WiFi;
