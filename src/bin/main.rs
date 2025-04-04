@@ -1,29 +1,12 @@
 #![no_std]
 #![no_main]
 
-use core::cell::RefCell;
-
-use embedded_hal_bus::spi::AtomicDevice;
-// use embedded_hal_bus::spi::ExclusiveDevice;
-use embedded_hal_bus::util::AtomicCell;
-use esp_hal::delay::Delay;
-use esp_hal::gpio::Level;
-use esp_hal::gpio::Output;
-use esp_hal::gpio::OutputConfig;
-use esp_hal::spi::master::Config;
-use esp_hal::spi::master::Spi;
-use esp_hal::time::Rate;
-use esp_println::print;
-use esp_println::println;
-use ieee80211::match_frames;
-use ieee80211::mgmt_frame::BeaconFrame;
 use log::error;
-use nrf24_rs::config::DataPipe;
-use nrf24_rs::config::NrfConfig;
-use nrf24_rs::Nrf24l01;
-use nrf24_rs::MAX_PAYLOAD_SIZE;
+#[allow(unused_imports)]
 use sirius::apps::sniffer::WifiSniffer;
+#[allow(unused_imports)]
 use sirius::apps::App;
+#[allow(unused_imports)]
 use sirius::devices::wifi::WiFi;
 
 use embassy_executor::Spawner;
