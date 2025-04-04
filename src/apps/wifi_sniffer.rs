@@ -39,7 +39,7 @@ impl<'a> WifiSniffer<'a, Sync> {
     }
 }
 
-impl<'a> SyncApp for WifiSniffer<'a, Sync> {
+impl SyncApp for WifiSniffer<'_, Sync> {
     fn enable(&mut self) {
         self.enabled = true;
         self.wifi.borrow_mut().set_promiscuous_mode(true);
@@ -55,7 +55,7 @@ impl<'a> SyncApp for WifiSniffer<'a, Sync> {
     }
 }
 
-impl<'a> AsyncApp for WifiSniffer<'a, Async> {
+impl AsyncApp for WifiSniffer<'_, Async> {
     fn task(&mut self) {
         todo!()
     }
