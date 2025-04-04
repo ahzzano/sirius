@@ -1,6 +1,5 @@
 use core::{cell::RefCell, marker::PhantomData};
 
-use esp_wifi::wifi::PromiscuousPkt;
 use log::info;
 
 use crate::devices::wifi::WiFi;
@@ -10,7 +9,7 @@ use super::{Async, AsyncApp, Sync, SyncApp};
 pub struct WifiSniffer<'a, Kind = Sync> {
     wifi: RefCell<WiFi<'a>>,
     enabled: bool,
-    Kind: PhantomData<Kind>,
+    kind: PhantomData<Kind>,
 }
 
 impl<'a> WifiSniffer<'a> {
@@ -18,7 +17,7 @@ impl<'a> WifiSniffer<'a> {
         WifiSniffer {
             wifi,
             enabled: true,
-            Kind: Default::default(),
+            kind: Default::default(),
         }
     }
 
@@ -35,7 +34,7 @@ impl<'a> WifiSniffer<'a, Sync> {
         WifiSniffer {
             wifi: self.wifi,
             enabled: self.enabled,
-            Kind: PhantomData::<Async>,
+            kind: PhantomData::<Async>,
         }
     }
 }
@@ -61,39 +60,3 @@ impl<'a> AsyncApp for WifiSniffer<'a, Async> {
         todo!()
     }
 }
-
-// #[allow(clippy::needless_lifetimes)]
-// impl<'a> WifiSniffer<'a> {
-//     pub fn new(wifi: RefCell<WiFi<'a>>) -> Self {
-//         WifiSniffer {
-//             wifi,
-//             enabled: false,
-//         }
-//     }
-
-//     pub fn set_callback(&mut self, callback: fn(PromiscuousPkt)) {
-//         self.wifi.borrow_mut().set_sniffer_callback(callback);
-//     }
-
-//     pub fn init(&mut self) {
-//         self.wifi.borrow_mut().init();
-//     }
-// }
-
-// impl App for WifiSniffer<'_> {
-//     fn enable(&mut self) {
-//         self.enabled = true;
-//         self.wifi.borrow_mut().set_promiscuous_mode(true);
-//     }
-
-//     // fn run(&mut self) {}
-
-//     fn disable(&mut self) {
-//         self.wifi.borrow_mut().set_promiscuous_mode(false);
-//         self.enabled = false;
-//     }
-
-//     fn is_enabled(&mut self) -> bool {
-//         self.enabled
-//     }
-// }
