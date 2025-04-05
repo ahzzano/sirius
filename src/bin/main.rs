@@ -42,6 +42,16 @@ fn panic(info: &core::panic::PanicInfo) -> ! {
 
 extern crate alloc;
 
+#[embassy_executor::task]
+async fn blinky(mut led: Output<'static>, delay: Duration) {
+    loop {
+        led.set_high();
+        Timer::after(delay).await;
+        led.set_low();
+        Timer::after(delay).await;
+    }
+}
+
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
     // generator version: 0.3.1
@@ -128,16 +138,19 @@ async fn main(spawner: Spawner) {
     let _ = nrf.start_listening();
 
     let mut buf = [0u8; MAX_PAYLOAD_SIZE as usize];
-    while nrf.data_available().is_ok() {
-        let res = nrf.read(&mut buf);
+    // while nrf.data_available().is_ok() {
+    //     let res = nrf.read(&mut buf);
 
-        if res.is_ok() {
-            println!("Read: {buf:02x?}");
-        }
-    }
+    //     if res.is_ok() {
+    //         println!("Read: {buf:02x?}");
+    //     }
+    // }
 
     // TODO: Spawn some tasks
-    let _ = spawner;
+    let led = Output::new(peripherals.GPIO23, Level::Low, OutputConfig::default());
+    spawner
+        .spawn(blinky(led, Duration::from_millis(300)))
+        .unwrap();
 
     loop {
         // info!("Hello world!");
